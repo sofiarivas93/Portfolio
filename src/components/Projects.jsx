@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
 import { projectsSection } from '../data/content.js'
 import { projects } from '../data/projects.js'
-import { cardClass } from '../lib.js'
-import Photo from './Photo.jsx'
+
+const featured = projects.filter((p) => p.featured)
 
 export default function Projects() {
   return (
@@ -10,14 +10,19 @@ export default function Projects() {
       <div className="wrap">
         <h2>{projectsSection.title}</h2>
         <p className="lead">{projectsSection.lead}</p>
-        <div className="grid">
-          {projects.map((p) => (
-            <Link key={p.slug} className={`card ${cardClass[p.color]} tape`} to={`/proyecto/${p.slug}`}>
-              <Photo src={p.image} alt={p.imageAlt} />
-              <small>{p.meta}</small>
+        <div className="projects">
+          {featured.map((p, i) => (
+            <Link key={p.slug} className="project" to={`/proyecto/${p.slug}`}>
+              <div className="project-cover">
+                <small>
+                  {String(i + 1).padStart(2, '0')} / {p.discipline}
+                </small>
+                <strong>{p.headline}</strong>
+              </div>
+              <small className="project-meta">{p.meta}</small>
               <h3>{p.title}</h3>
-              <p>{p.description}</p>
-              <em>{projectsSection.open}</em>
+              <p>{p.summary}</p>
+              <span className="project-open">{projectsSection.open}</span>
             </Link>
           ))}
         </div>

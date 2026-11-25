@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { nav, site } from '../data/content.js'
-import { asset } from '../lib.js'
 
 // Píldora de navegación fija y, en la home, los puntos laterales con la sección activa.
 export default function Nav({ active = null, showDots = false }) {
@@ -18,9 +17,6 @@ export default function Nav({ active = null, showDots = false }) {
               {s.label}
             </Link>
           ))}
-          <a href={asset(site.cv)} download>
-            {nav.cv}
-          </a>
         </nav>
       </div>
 

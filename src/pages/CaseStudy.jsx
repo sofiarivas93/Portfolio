@@ -5,11 +5,235 @@ import Photo from '../components/Photo.jsx'
 import { caseStudy as t, site } from '../data/content.js'
 import { getProject, projects } from '../data/projects.js'
 
-// Muestra un texto (string o lista de párrafos) o el aviso de contenido pendiente.
-function Text({ value }) {
-  const paragraphs = (Array.isArray(value) ? value : [value]).filter(Boolean)
-  if (paragraphs.length === 0) return <p className="pending">{t.pending}</p>
-  return paragraphs.map((p, i) => <p key={i}>{p}</p>)
+const toList = (value) => (Array.isArray(value) ? value : [value]).filter(Boolean)
+const percent = new Intl.NumberFormat('es', { maximumFractionDigits: 1 })
+
+function Paragraphs({ value, className }) {
+  return toList(value).map((p, i) => (
+    <p key={i} className={className}>
+      {p}
+    </p>
+  ))
+}
+
+// Polaroids con el espacio "Agrega imagen: …" mientras falte el archivo.
+function Gallery({ images, title }) {
+  if (!images?.length) return null
+  return (
+    <div className="case-gallery">
+      {images.map((img, i) => (
+        <figure key={img.src} className="polaroid">
+          <Photo key={img.src} src={img.src} alt={img.alt || `${title}, imagen ${i + 1}`} />
+          {img.caption && <figcaption>{img.caption}</figcaption>}
+        </figure>
+      ))}
+    </div>
+  )
+}
+
+// Barras horizontales de una sola serie, con el valor escrito y la meta como línea punteada.
+function Chart({ chart }) {
+  const max = Math.max(chart.goal ?? 0, ...chart.items.map((d) => d.value))
+  return (
+    <figure className="case-chart">
+      <figcaption>{chart.title}</figcaption>
+      {chart.goal !== undefined && (
+        <div className="chart-row chart-goal" aria-hidden="true">
+          <span />
+          <span style={{ width: `${(chart.goal / max) * 100}%` }}>{chart.goalLabel}</span>
+        </div>
+      )}
+      <ul>
+        {chart.items.map((d) => (
+          <li key={d.label} className="chart-row">
+            <span className="chart-label">{d.label}</span>
+            <span className="chart-track" style={{ width: `${((chart.goal ?? max) / max) * 100}%` }}>
+              <span className="chart-bar" style={{ width: `${(d.value / (chart.goal ?? max)) * 100}%` }} />
+            </span>
+            <span className="chart-value">{percent.format(d.value)}%</span>
+          </li>
+        ))}
+      </ul>
+    </figure>
+  )
+}
+
+function Table({ table }) {
+  return (
+    <div className="case-table">
+      <b className="case-label">{table.caption}</b>
+      {table.rows.length === 0 ? (
+        <p className="pending">{t.pending}</p>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              {table.columns.map((col) => (
+                <th key={col} scope="col">
+                  {col}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {table.rows.map((row, i) => (
+              <tr key={i}>
+                {row.map((cell, j) => (
+                  <td key={j}>{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  )
+}
+
+// Un elemento de lista: texto simple, { title, text } o, con tag, un bloque numerado
+// que puede incluir la pregunta que responde, el cambio tras la prueba e imágenes.
+function Item({ item, title: caseTitle }) {
+  if (typeof item === 'string') return <li>{item}</li>
+
+  const title = item.href ? (
+    <a href={item.href} target="_blank" rel="noreferrer">
+      {item.title}
+    </a>
+  ) : (
+    item.title
+  )
+
+  if (item.tag) {
+    return (
+      <li className="tagged">
+        <span className="case-tag" aria-hidden="true">
+          {item.tag}
+        </span>
+        <strong>{title}</strong>
+        <div className="tagged-body">
+          {item.question && <p className="case-question">{item.question}</p>}
+          <Paragraphs value={item.text} />
+          {item.change && (
+            <p>
+              <b>{t.change}</b> {item.change}
+            </p>
+          )}
+          <Gallery images={item.images} title={caseTitle} />
+        </div>
+      </li>
+    )
+  }
+
+  return (
+    <li>
+      <strong>{title}</strong> {item.text}
+      {item.points?.length > 0 && (
+        <ul className="case-points">
+          {item.points.map((point) => (
+            <li key={point}>{point}</li>
+          ))}
+        </ul>
+      )}
+    </li>
+  )
+}
+
+// Contenido de una sección: string, lista de párrafos, lista de elementos u objeto
+// { intro, steps, cards, items, questions, flow, chart, table, quotes, images, note }.
+// Si no hay nada, muestra el aviso de contenido pendiente.
+function Content({ value, title }) {
+  const isList = Array.isArray(value) && value.some((v) => typeof v === 'object')
+  const rich = isList ? { items: value } : value && typeof value === 'object' && !Array.isArray(value) ? value : null
+
+  if (!rich) {
+    if (toList(value).length === 0) return <p className="pending">{t.pending}</p>
+    return <Paragraphs value={value} />
+  }
+
+  const {
+    intro,
+    steps = [],
+    cards = [],
+    items = [],
+    questions = [],
+    flow,
+    chart,
+    table,
+    quotes = [],
+    images = [],
+    note,
+  } = rich
+  const empty =
+    !intro &&
+    !note &&
+    !flow &&
+    !chart &&
+    !table &&
+    [steps, cards, items, questions, quotes, images].every((l) => l.length === 0)
+  if (empty) return <p className="pending">{t.pending}</p>
+
+  return (
+    <>
+      <Paragraphs value={intro} />
+      {steps.length > 0 && (
+        <ol className="case-steps">
+          {steps.map((step) => (
+            <li key={step}>{step}</li>
+          ))}
+        </ol>
+      )}
+      {cards.length > 0 && (
+        <div className="case-cards">
+          {cards.map((card) => (
+            <div key={card.title} className="note">
+              <b>{card.title}</b>
+              <p>{card.text}</p>
+            </div>
+          ))}
+        </div>
+      )}
+      {items.length > 0 && (
+        <ul className="case-list">
+          {items.map((item, i) => (
+            <Item key={i} item={item} title={title} />
+          ))}
+        </ul>
+      )}
+      {questions.length > 0 && (
+        <ul className="case-questions">
+          {questions.map((q) => (
+            <li key={q}>{q}</li>
+          ))}
+        </ul>
+      )}
+      {flow && (
+        <div className="case-flow">
+          <b className="case-label">{flow.title}</b>
+          <ol>
+            {flow.steps.map((step) => (
+              <li key={step}>
+                <span>{step}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
+      {chart && <Chart chart={chart} />}
+      {table && <Table table={table} />}
+      {quotes.length > 0 && (
+        <div className="case-quotes">
+          {quotes.map((q) => (
+            <blockquote key={q.text}>
+              <p>{q.text}</p>
+              <footer>{q.author}</footer>
+            </blockquote>
+          ))}
+        </div>
+      )}
+      <Gallery images={images} title={title} />
+      <Paragraphs value={note} className="case-note" />
+    </>
+  )
 }
 
 function Block({ title, children }) {
@@ -20,6 +244,21 @@ function Block({ title, children }) {
     </div>
   )
 }
+
+// Orden de las secciones. Las opcionales solo aparecen si el caso las define.
+const SECTIONS = [
+  { key: 'context' },
+  { key: 'problem' },
+  { key: 'role' },
+  { key: 'process' },
+  { key: 'findings', optional: true },
+  { key: 'decisions', optional: true },
+  { key: 'solution' },
+  { key: 'results' },
+  { key: 'learnings' },
+  { key: 'publications', optional: true },
+  { key: 'nextSteps', optional: true },
+]
 
 export default function CaseStudy() {
   const { slug } = useParams()
@@ -47,7 +286,8 @@ export default function CaseStudy() {
   }
 
   const c = project.caseStudy
-  const s = t.sections
+  const summary = c.summary ?? {}
+  const titleOf = (key) => c.titles?.[key] ?? t.sections[key]
   const index = projects.indexOf(project)
   const next = projects[(index + 1) % projects.length]
 
@@ -65,53 +305,62 @@ export default function CaseStudy() {
               <p className="case-meta">{project.meta}</p>
               <h1>{project.title}</h1>
               <p className="sub">{project.description}</p>
+              <Paragraphs value={summary.intro} className="case-intro" />
             </div>
             <figure className="note case-cover tape" style={{ background: `var(--${project.color})` }}>
               <Photo key={project.image} src={project.image} alt={project.imageAlt} />
             </figure>
           </header>
 
-          <Block title={s.context}>
-            <Text value={c.context} />
-          </Block>
-          <Block title={s.problem}>
-            <Text value={c.problem} />
-          </Block>
-          <Block title={s.role}>
-            <Text value={c.role} />
-          </Block>
-          <Block title={s.process}>
-            <Text value={c.process} />
-            {c.methods.length > 0 && (
-              <>
-                <b className="case-label">{t.methods}</b>
-                <div className="chips">
-                  {c.methods.map((m) => (
-                    <span key={m}>{m}</span>
-                  ))}
+          {summary.facts?.length > 0 && (
+            <dl className="case-facts" aria-label={t.summary}>
+              {summary.facts.map((f) => (
+                <div key={f.label}>
+                  <dt>{f.label}</dt>
+                  <dd>{f.value}</dd>
                 </div>
-              </>
-            )}
-          </Block>
-          <Block title={s.solution}>
-            <Text value={c.solution} />
-          </Block>
-          <Block title={s.results}>
-            <Text value={c.results} />
-          </Block>
-          <Block title={s.learnings}>
-            <Text value={c.learnings} />
-          </Block>
-          <Block title={s.images}>
-            <div className="case-gallery">
-              {c.images.map((img, i) => (
-                <figure key={img.src} className="polaroid">
-                  <Photo key={img.src} src={img.src} alt={img.alt || `${project.title}, imagen ${i + 1}`} />
-                  {img.caption && <figcaption>{img.caption}</figcaption>}
-                </figure>
               ))}
-            </div>
-          </Block>
+            </dl>
+          )}
+
+          {summary.highlights?.length > 0 && (
+            <ul className="case-stats">
+              {summary.highlights.map((h) => (
+                <li key={h.label}>
+                  <strong>{h.value}</strong>
+                  <span>{h.label}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {SECTIONS.filter((s) => !s.optional || c[s.key] !== undefined).map((s) => (
+            <Block key={s.key} title={titleOf(s.key)}>
+              <Content value={c[s.key]} title={project.title} />
+              {s.key === 'process' && c.methods?.length > 0 && (
+                <>
+                  <b className="case-label">{t.methods}</b>
+                  <div className="chips">
+                    {c.methods.map((m) => (
+                      <span key={m}>{m}</span>
+                    ))}
+                  </div>
+                </>
+              )}
+            </Block>
+          ))}
+
+          {c.images.length > 0 && (
+            <Block title={titleOf('images')}>
+              <Gallery images={c.images} title={project.title} />
+            </Block>
+          )}
+
+          {c.cta && (
+            <p className="case-cta">
+              {c.cta.text} <a href={`mailto:${site.email}`}>{c.cta.link}</a>
+            </p>
+          )}
 
           <Link className={`card case-next tape`} to={`/proyecto/${next.slug}`} style={{ background: `var(--${next.color})` }}>
             <small>{t.next}</small>

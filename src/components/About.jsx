@@ -1,5 +1,6 @@
 import { about, site } from '../data/content.js'
 import { asset } from '../lib.js'
+import Icon from './Icon.jsx'
 import Photo from './Photo.jsx'
 
 export default function About() {
@@ -8,48 +9,43 @@ export default function About() {
       <div className="wrap about">
         <div>
           <h2>{about.title}</h2>
-          <p>{about.intro}</p>
-          <p>
-            {about.research.before}
-            <em>{about.research.journal}</em>
-            {about.research.after}
-          </p>
-          <p>
-            <a className="link" href={asset(site.cv)} download>
-              {about.cvLink}
+          {about.paragraphs.map((text) => (
+            <p key={text}>{text}</p>
+          ))}
+          <p>{about.cta}</p>
+          <div className="btns">
+            <a className="btn" href={`mailto:${site.email}`}>
+              <Icon name="mail" />
+              {about.email}
             </a>
-          </p>
+            {about.links.map((l) => (
+              <a key={l.label} className="btn" href={l.href} target="_blank" rel="noreferrer" data-todo={l.todo}>
+                <Icon name={l.icon} />
+                {l.label}
+              </a>
+            ))}
+          </div>
+          <a className="cv-link" href={asset(site.cv)} download>
+            {about.cvLink}
+          </a>
         </div>
 
-        <div className="collage">
-          <div className="note peach span tape">
-            <p>{about.quote.text}</p>
-            <small>{about.quote.footnote}</small>
-          </div>
-
-          <figure className="polaroid">
+        <div className="stack">
+          <figure className="polaroid tape">
             <Photo src={about.photo.src} alt={about.photo.alt} />
             <figcaption>{about.photo.caption}</figcaption>
           </figure>
-
-          <div className="note lilac">
-            <b>{about.career.title}</b>
-            {about.career.items.map((item) => (
-              <p key={item.role}>
-                {item.role}
-                <small>{item.place}</small>
-              </p>
-            ))}
-          </div>
-
-          <div className="note sage span">
-            <b>{about.strengths.title}</b>
-            <div className="chips">
-              {about.strengths.items.map((item) => (
-                <span key={item}>{item}</span>
+          <aside className="note career">
+            <h3>{about.career.title}</h3>
+            <ul>
+              {about.career.items.map((item) => (
+                <li key={item.role}>
+                  {item.role}
+                  <small>{item.place}</small>
+                </li>
               ))}
-            </div>
-          </div>
+            </ul>
+          </aside>
         </div>
       </div>
     </section>

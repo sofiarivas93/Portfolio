@@ -13,7 +13,7 @@ Portfolio web de Sofia Rivas, Product Designer e Ingeniera de Software (Paraguay
 ## Estructura
 
 - `referencia/index.html`: diseño original de la home. Es la referencia visual; no modificarlo.
-- `src/components/`: Nav, Hero, About, Projects, Contact.
+- `src/components/`: Nav, Hero, About, Projects, Photo, Icon.
 - `src/data/projects.js`: lista de proyectos (slug, título, meta, descripción, color, imagen).
 - `src/pages/CaseStudy.jsx`: plantilla de caso de estudio, ruta `/proyecto/:slug`.
 - `public/assets/`: imágenes y CV. Rutas finales: `assets/sofia.jpg`, `assets/<slug>.jpg`, `assets/Sofia-Rivas-CV.pdf`. Respetar el `base` de Vite al referenciarlas.
@@ -27,10 +27,10 @@ Portfolio web de Sofia Rivas, Product Designer e Ingeniera de Software (Paraguay
 
 Estilo minimalista de "escritorio de papel": fondo beige, notas adhesivas, polaroid y tarjetas con cinta, ligeramente rotadas.
 
-- Colores: `--bg #E9E5DE`, `--ink #26241F`, `--muted #5F5A50`, `--paper #F6F4EF`, `--line #CFC9BD`. Notas: `--lilac #E2D7E8`, `--peach #F2DEC9`, `--sage #D4E3C7`, `--steel #D6DAE1`, `--butter #EFE5BF`.
-- Tipografías: **Instrument Serif** para títulos, **Inter** para el texto.
-- Menú: píldora flotante arriba a la derecha, más puntos de navegación a la derecha con la sección activa.
-- Las tarjetas de proyecto se inclinan unos grados y se enderezan al pasar el mouse. Sin otras animaciones decorativas.
+- Colores: `--bg #F3EFE9`, `--ink #26241F`, `--muted #5F5A50`, `--paper #F6F4EF`, `--line #CFC9BD`. Notas: `--lilac #E2D7E8`, `--peach #F2DEC9`, `--sage #D4E3C7`, `--steel #D6DAE1`, `--butter #EFE5BF`. Home: `--rose #D8B6AB`, `--sage-deep #A9B9A6`, `--mustard #DCC68A`, `--note #EFEBDF`.
+- Tipografías: **Jost** para títulos y tarjetas, **Inter** para el texto, **Sacramento** solo para el saludo "Hola, soy Sofia".
+- Menú: píldora flotante arriba a la derecha (Inicio, Proyectos, Sobre mí), más puntos de navegación a la derecha con la sección activa.
+- En la home, las tarjetas de proyecto van rectas con borde y se elevan un poco al pasar el mouse. Polaroids y notas adhesivas van inclinadas. Sin otras animaciones decorativas.
 - Cada imagen tiene un espacio con el texto "Agrega imagen: assets/...". Mantener ese patrón mientras falten imágenes.
 - Respetar `prefers-reduced-motion`, mantener `:focus-visible` y contraste legible. Debe verse bien en móvil.
 
