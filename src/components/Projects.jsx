@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { projectsSection } from '../data/content.js'
 import { projects } from '../data/projects.js'
 
-const featured = projects.filter((p) => p.featured)
+const featured = projects.filter((p) => p.featured).sort((a, b) => a.featured - b.featured)
 
 export default function Projects() {
   return (
@@ -13,7 +13,7 @@ export default function Projects() {
         <div className="projects">
           {featured.map((p, i) => (
             <Link key={p.slug} className="project" to={`/proyecto/${p.slug}`}>
-              <div className="project-cover">
+              <div className="project-cover" style={{ background: `var(--${p.coverColor})` }}>
                 <small>
                   {String(i + 1).padStart(2, '0')} / {p.discipline}
                 </small>

@@ -4,6 +4,7 @@ import Nav from '../components/Nav.jsx'
 import Photo from '../components/Photo.jsx'
 import { caseStudy as t, site } from '../data/content.js'
 import { getProject, projects } from '../data/projects.js'
+import arrow from '../assets/icons/arrow.svg'
 
 const toList = (value) => (Array.isArray(value) ? value : [value]).filter(Boolean)
 const percent = new Intl.NumberFormat('es', { maximumFractionDigits: 1 })
@@ -29,6 +30,71 @@ function Gallery({ images, title }) {
       ))}
     </div>
   )
+}
+
+// Imagen enmarcada en un color, sin inclinar. Con ratio, ocupa todo el ancho disponible.
+function Figure({ figure, wide }) {
+  const className = ['case-figure', figure.fit === 'contain' && 'fit-contain', (wide || figure.ratio) && 'wide']
+    .filter(Boolean)
+    .join(' ')
+  return (
+    <figure
+      className={className}
+      style={{
+        background: `var(--${figure.bg ?? 'paper'})`,
+        '--ratio': figure.ratio,
+      }}
+    >
+      <Photo src={figure.src} alt={figure.alt} imgStyle={figure.imgStyle} />
+    </figure>
+  )
+}
+
+function Figures({ figures }) {
+  if (!figures?.length) return null
+  return (
+    <div className="case-figures">
+      {figures.map((f) => (
+        <Figure key={f.src} figure={f} />
+      ))}
+    </div>
+  )
+}
+
+// Antes y después de un porcentaje, con barras sobre una escala de 0 a 100%.
+function Comparison({ data }) {
+  return (
+    <div className="case-compare">
+      <div className="compare-read">
+        <p className="compare-value">{data.value}</p>
+        <p>{data.text}</p>
+      </div>
+      <div className="compare-bars">
+        {data.items.map((d) => (
+          <div key={d.label}>
+            <p>
+              {d.label} · {percent.format(d.value)}%
+            </p>
+            <span className="compare-track" aria-hidden="true">
+              <span className="compare-bar" style={{ width: `${d.value}%` }} />
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function Note({ value }) {
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    return (
+      <div className="case-note-box">
+        <p className="case-note-label">{value.label}</p>
+        <p>{value.text}</p>
+      </div>
+    )
+  }
+  return <Paragraphs value={value} className="case-note" />
 }
 
 // Barras horizontales de una sola serie, con el valor escrito y la meta como línea punteada.
@@ -95,6 +161,18 @@ function Table({ table }) {
 function Item({ item, title: caseTitle }) {
   if (typeof item === 'string') return <li>{item}</li>
 
+  if (!item.title && item.href) {
+    return (
+      <li>
+        {item.text}{' '}
+        <a className="case-link" href={item.href} target="_blank" rel="noreferrer">
+          {item.href}
+        </a>
+      </li>
+    )
+  }
+  if (!item.title) return <li>{item.text}</li>
+
   const title = item.href ? (
     <a href={item.href} target="_blank" rel="noreferrer">
       {item.title}
@@ -105,7 +183,7 @@ function Item({ item, title: caseTitle }) {
 
   if (item.tag) {
     return (
-      <li className="tagged">
+      <li className={item.figure ? 'tagged has-figure' : 'tagged'}>
         <span className="case-tag" aria-hidden="true">
           {item.tag}
         </span>
@@ -120,13 +198,16 @@ function Item({ item, title: caseTitle }) {
           )}
           <Gallery images={item.images} title={caseTitle} />
         </div>
+        {item.figure && <Figure figure={item.figure} />}
       </li>
     )
   }
 
   return (
     <li>
-      <strong>{title}</strong> {item.text}
+      <span>
+        <strong>{title}</strong> {item.text}
+      </span>
       {item.points?.length > 0 && (
         <ul className="case-points">
           {item.points.map((point) => (
@@ -155,12 +236,15 @@ function Content({ value, title }) {
     steps = [],
     cards = [],
     items = [],
+    numbered,
     questions = [],
     flow,
     chart,
+    comparison,
     table,
     quotes = [],
     images = [],
+    figures = [],
     note,
   } = rich
   const empty =
@@ -168,8 +252,9 @@ function Content({ value, title }) {
     !note &&
     !flow &&
     !chart &&
+    !comparison &&
     !table &&
-    [steps, cards, items, questions, quotes, images].every((l) => l.length === 0)
+    [steps, cards, items, questions, quotes, images, figures].every((l) => l.length === 0)
   if (empty) return <p className="pending">{t.pending}</p>
 
   return (
@@ -193,19 +278,24 @@ function Content({ value, title }) {
         </div>
       )}
       {items.length > 0 && (
-        <ul className="case-list">
+        <ul className={numbered ? 'case-list numbered' : 'case-list'}>
           {items.map((item, i) => (
             <Item key={i} item={item} title={title} />
           ))}
         </ul>
       )}
       {questions.length > 0 && (
-        <ul className="case-questions">
-          {questions.map((q) => (
-            <li key={q}>{q}</li>
-          ))}
-        </ul>
+        <>
+          <b className="case-label case-questions-label">{t.questions}</b>
+          <ul className="case-questions">
+            {questions.map((q) => (
+              <li key={q}>{q}</li>
+            ))}
+          </ul>
+        </>
       )}
+      {comparison && <Comparison data={comparison} />}
+      <Figures figures={figures} />
       {flow && (
         <div className="case-flow">
           <b className="case-label">{flow.title}</b>
@@ -231,16 +321,17 @@ function Content({ value, title }) {
         </div>
       )}
       <Gallery images={images} title={title} />
-      <Paragraphs value={note} className="case-note" />
+      <Note value={note} />
     </>
   )
 }
 
-function Block({ title, children }) {
+function Block({ title, name, wideFigure, children }) {
   return (
-    <div className="case-block">
+    <div className={name ? `case-block case-${name}` : 'case-block'}>
       <h2>{title}</h2>
       <div className="case-text">{children}</div>
+      {wideFigure && <Figure figure={wideFigure} wide />}
     </div>
   )
 }
@@ -275,6 +366,7 @@ export default function CaseStudy() {
         <main className="case">
           <div className="wrap">
             <Link className="back" to="/#proyectos">
+              <img src={arrow} alt="" />
               {t.back}
             </Link>
             <h1>{t.notFound.title}</h1>
@@ -297,17 +389,21 @@ export default function CaseStudy() {
       <main className="case">
         <div className="wrap">
           <Link className="back" to="/#proyectos">
+            <img src={arrow} alt="" />
             {t.back}
           </Link>
 
+          <p className="case-meta">{project.meta}</p>
           <header className="case-head">
             <div>
-              <p className="case-meta">{project.meta}</p>
               <h1>{project.title}</h1>
               <p className="sub">{project.description}</p>
               <Paragraphs value={summary.intro} className="case-intro" />
             </div>
-            <figure className="note case-cover tape" style={{ background: `var(--${project.color})` }}>
+            <figure
+              className="note case-cover"
+              style={{ background: `var(--${project.coverColor ?? project.color})` }}
+            >
               <Photo key={project.image} src={project.image} alt={project.imageAlt} />
             </figure>
           </header>
@@ -335,7 +431,7 @@ export default function CaseStudy() {
           )}
 
           {SECTIONS.filter((s) => !s.optional || c[s.key] !== undefined).map((s) => (
-            <Block key={s.key} title={titleOf(s.key)}>
+            <Block key={s.key} name={s.key} title={titleOf(s.key)} wideFigure={c[s.key]?.wideFigure}>
               <Content value={c[s.key]} title={project.title} />
               {s.key === 'process' && c.methods?.length > 0 && (
                 <>
@@ -362,7 +458,7 @@ export default function CaseStudy() {
             </p>
           )}
 
-          <Link className={`card case-next tape`} to={`/proyecto/${next.slug}`} style={{ background: `var(--${next.color})` }}>
+          <Link className="card case-next" to={`/proyecto/${next.slug}`} style={{ background: `var(--${next.color})` }}>
             <small>{t.next}</small>
             <h3>{next.title}</h3>
             <p>{next.description}</p>

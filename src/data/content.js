@@ -19,27 +19,30 @@ export const nav = {
 
 export const hero = {
   hello: 'Hola, soy Sofia',
-  title: 'Diseño experiencias…',
-  sub: 'Donde las necesidades de las personas y los objetivos del negocio se encuentran.',
+  title: 'Diseño productos digitales con propósito.',
+  sub: 'Transformo problemas complejos en experiencias digitales claras, útiles y accesibles.',
   // color: fondo de la tarjeta (rose, sage-deep, mustard; ver styles.css).
   skills: [
-    { title: 'Diseño', text: 'Diseño que se puede construir.', color: 'rose' },
-    { title: 'Investigación', text: 'Validación de decisiones con usuarios.', color: 'sage-deep' },
-    { title: 'Accesibilidad', text: 'Accesibilidad (WCAG 2.1).', color: 'mustard' },
+    {
+      title: 'Diseño de ecosistemas complejos.',
+      text: 'Diseño productos que conectan personas, procesos y organizaciones, transformando flujos empresariales complejos en experiencias coherentes.',
+      color: 'rose',
+    },
+    {
+      title: 'Investigar antes de decidir',
+      text: 'Valido hipótesis y decisiones de diseño mediante investigación UX, prototipos y pruebas de usabilidad.',
+      color: 'sage-deep',
+    },
+    {
+      title: 'Diseño con impacto real.',
+      text: 'Conecto las necesidades de las personas con soluciones tecnológicas que mejoran experiencias, procesos y servicios.',
+      color: 'mustard',
+    },
   ],
   photo: {
     src: 'assets/sofia-hero.jpg',
     alt: 'Sofia Rivas sonriendo, sentada en un sofá azul junto a un ventanal',
     caption: 'Figma offices, San Francisco, EE. UU.',
-  },
-  best: {
-    title: 'Lo que mejor hago:',
-    items: [
-      'Flujos empresariales complejos',
-      'Validación de decisiones con usuarios',
-      'Diseño que se puede construir',
-      'Accesibilidad (WCAG 2.1)',
-    ],
   },
 }
 
@@ -65,14 +68,8 @@ export const about = {
       href: 'https://www.linkedin.com/in/sofianoeliarivas',
       todo: 'Verifica esta URL de LinkedIn',
     },
-    {
-      label: 'Behance',
-      icon: 'behance',
-      href: 'https://www.behance.net/',
-      todo: 'Reemplaza con tu perfil de Behance',
-    },
   ],
-  cvLink: 'Descarga mi CV ↓',
+  cvLink: 'Descarga mi CV',
   photo: {
     src: 'assets/sofia.jpg',
     alt: 'Sofia Rivas en Figma Config 2026',
@@ -90,7 +87,8 @@ export const about = {
 }
 
 export const caseStudy = {
-  back: '← Volver a proyectos',
+  back: 'Volver a proyectos',
+  questions: 'Las preguntas que guiaron el rediseño',
   role: 'Mi rol',
   pending: 'Contenido pendiente.',
   sections: {

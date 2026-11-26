@@ -19,20 +19,10 @@ export default function Hero() {
           </ul>
         </div>
 
-        <div className="stack">
-          <figure className="polaroid">
-            <Photo src={hero.photo.src} alt={hero.photo.alt} />
-            <figcaption>{hero.photo.caption}</figcaption>
-          </figure>
-          <aside className="note best">
-            <h2>{hero.best.title}</h2>
-            <ul>
-              {hero.best.items.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </aside>
-        </div>
+        <figure className="polaroid hero-photo">
+          <Photo src={hero.photo.src} alt={hero.photo.alt} />
+          <figcaption>{hero.photo.caption}</figcaption>
+        </figure>
       </div>
     </section>
   )

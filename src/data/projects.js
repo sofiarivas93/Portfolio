@@ -1,7 +1,7 @@
 // Proyectos del portfolio.
 //
 // - color: nota de fondo de la tarjeta (sage, lilac, peach, steel, butter). Define también su inclinación.
-// - featured: se muestra en la home. discipline, headline y summary son los textos de esa tarjeta.
+// - featured: posición en la home (1, 2, …). discipline, headline, summary y coverColor son los textos y el color de esa tarjeta.
 // - image: imagen de la tarjeta y portada del caso de estudio (dentro de public/).
 // - caseStudy: contenido del caso. Cada sección acepta:
 //     - un string o una lista de párrafos, o
@@ -15,6 +15,13 @@
 //   El objeto de una sección también acepta cards ([{ title, text }]), chart ({ title, goal, goalLabel,
 //   items: [{ label, value }] }), table ({ caption, columns, rows }), quotes ([{ text, author }]) e
 //   images ([{ src, alt, caption }]). Un item con tag acepta además question, change e images.
+//   Figuras con marco de color (sin inclinar): figures ([{ src, alt, bg, fit, ratio, imgStyle }]) va dentro
+//   del texto; wideFigure ocupa el ancho completo de la sección; un item con tag acepta figure, que va a
+//   su derecha. bg: variable de color (mocha, mustard…; por defecto paper). fit: 'cover' (por defecto) o
+//   'contain'. ratio: proporción de la imagen (si falta, alto fijo de 225px). imgStyle: recorte manual.
+//   numbered: true numera los items en círculos. comparison: { value, text, items: [{ label, value }] }
+//   compara porcentajes con barras. note también acepta { label, text } para mostrarla en un recuadro.
+//   Un item { text, href } sin title muestra el texto seguido del enlace (por ejemplo, publicaciones).
 //   titles (opcional) reemplaza el título de una sección, por ejemplo { solution: 'Tres intervenciones' }.
 //   cta (opcional): { text, link } al final del caso; el enlace abre el correo.
 //   images: galería final. Si está vacía, no se muestra la sección Imágenes.
@@ -40,13 +47,14 @@ export const projects = [
   {
     slug: 'che-roga-pora-exterior',
     title: 'Che Róga Porã',
-    meta: '2025–2026 · Web · Vivienda',
+    meta: '2025 — 2026 · Web · B2G',
     description: 'Crédito de vivienda para paraguayos en el exterior.',
-    featured: true,
+    featured: 2,
     discipline: 'Product design',
     headline: 'Crédito de vivienda para paraguayos en el exterior',
     summary: 'Un rediseño pensado para hacer un proceso complejo algo sencillo.',
     color: 'sage',
+    coverColor: 'rose',
     image: 'assets/che-roga-pora.jpg',
     imageAlt: 'Hero de la landing: "Tu casa propia, estés donde estés"',
     caseStudy: {
@@ -201,13 +209,14 @@ export const projects = [
   {
     slug: 'marketplace-che-roga-pora',
     title: 'Marketplace Che Róga Porã',
-    meta: 'En desarrollo · Web · Marketplace',
+    meta: '2026 — En curso · Web · B2G',
     description: 'Un solo lugar para encontrar una vivienda o una constructora y pedir el crédito.',
-    featured: true,
+    featured: 1,
     discipline: 'Product design',
-    headline: 'Un solo lugar para encontrar una vivienda o una constructora y pedir el crédito.',
-    summary: 'Integré la búsqueda de vivienda con la solicitud de crédito del programa.',
+    headline: 'Una experiencia completa para encontrar tu nuevo hogar y completar la solicitud de crédito',
+    summary: 'Dos sistemas separados que se fusionan para crear una única experiencia de adquisición.',
     color: 'lilac',
+    coverColor: 'line',
     image: 'assets/marketplace.jpg',
     imageAlt: 'Home del Marketplace, con el buscador sobre el hero y las propiedades nuevas',
     caseStudy: {
@@ -362,13 +371,14 @@ export const projects = [
   {
     slug: 'talentview-tracker',
     title: 'Staffing Cockpit',
-    meta: '2023–2024 · Dashboard · Power BI · B2B',
+    meta: '2023 — 2024 · Dashboard · Power BI · B2B',
     description: 'Decisiones de staffing con datos claros, en un solo tablero.',
-    featured: true,
+    featured: 3,
     discipline: 'Product design',
     headline: 'Decisiones de staffing con datos claros, en un solo dashboard',
     summary: 'Una experiencia que conecta personas y tecnología.',
     color: 'steel',
+    coverColor: 'sage-deep',
     image: 'assets/talentview.jpg',
     imageAlt: 'Collage de las cuatro vistas del tablero en Power BI, con la vista de costos y posiciones al frente',
     caseStudy: {
@@ -562,19 +572,20 @@ export const projects = [
   {
     slug: 'topadengue',
     title: 'TopaDengue',
-    meta: '2018–2020 · Investigación HCI · Cívica',
+    meta: '2018 — 2020 · Investigación HCI',
     description: 'Tecnología cívica para que una comunidad prevenga el dengue.',
-    featured: true,
+    featured: 4,
     discipline: 'UX Researcher & Full stack developer',
     headline: 'Tecnología cívica para que una comunidad prevenga el dengue.',
     summary: 'Prevenir era un trabajo comunitario. Organizarse, una barrera.',
     color: 'butter',
+    coverColor: 'mustard',
     image: 'assets/topadengue.jpg',
-    imageAlt: 'Plataforma DengueChat',
+    imageAlt: 'Voluntarios de TopaDengue con remeras verdes registran una visita en un celular y en un formulario en papel',
     caseStudy: {
       summary: {
         intro:
-          'Voluntarios de Bañado Sur, en Asunción, visitaban casas cada semana para encontrar criaderos del mosquito Aedes aegypti. Investigamos y rediseñamos sus herramientas para que dedicaran más tiempo a prevenir y menos a organizarse.',
+          'Voluntarios de Bañado Sur, en Asunción, visitaban casas cada semana para encontrar criaderos del mosquito Aedes aegypti. Investigamos y rediseñamos sus herramientas para optimizar su día a día con el objetivo de dedicar más tiempo a prevenir y menos a organizarse.',
         facts: [
           { label: 'Rol', value: 'UX Researcher y Full Stack Developer' },
           { label: 'Período', value: '2018–2020' },
@@ -585,16 +596,26 @@ export const projects = [
           { label: 'Herramientas', value: 'DengueChat, ODK, WhatsApp Business' },
         ],
         highlights: [
-          { value: 'Hasta 1/3', label: 'de cada jornada se iba en decidir qué manzanas visitar' },
-          { value: '71%', label: 'de los voluntarios encontró útiles los mensajes semanales' },
-          { value: '3', label: 'publicaciones científicas' },
+          { value: '1/3', label: 'Hasta un tercio de cada jornada se iba en decidir qué manzanas visitar.' },
+          { value: '71%', label: 'De los voluntarios encontró útiles los mensajes semanales.' },
+          { value: '3', label: 'Publicaciones científicas.' },
         ],
       },
-      titles: { solution: 'Tres intervenciones', learnings: 'Lo que aprendí' },
-      context:
-        'TopaDengue evaluó un programa de movilización comunitaria contra el dengue en un barrio inundable de Asunción. Voluntarios del propio barrio, capacitados para esto, visitaban casa por casa una vez por semana. Registraban criaderos con tablets y formularios en papel, y subían los datos a DengueChat.',
+      titles: { solution: 'Intervenciones', learnings: 'Lo que aprendí' },
+      context: {
+        intro:
+          'TopaDengue evaluó un programa de movilización comunitaria contra el dengue en un barrio inundable de Asunción. Voluntarios del propio barrio, capacitados para esto, visitaban casa por casa una vez por semana. Registraban criaderos con tablets y formularios en papel, y subían los datos a DengueChat.',
+        wideFigure: {
+          src: 'assets/topadengue-contexto.png',
+          alt: 'Tres fotos del trabajo de campo: un registro en tablet sobre un formulario en papel, voluntarios revisando un celular y una planilla, y un grupo recorriendo una calle del barrio',
+          bg: 'mocha',
+          fit: 'contain',
+          ratio: '1070.67 / 303.17',
+        },
+      },
       problem: {
         intro: 'Encontramos tres problemas:',
+        numbered: true,
         items: [
           {
             title: 'La app móvil no funcionaba para ellos.',
@@ -614,7 +635,20 @@ export const projects = [
           '¿Cómo podríamos reducir el tiempo que se dedica a la logística del trabajo de campo?',
         ],
       },
-      role: 'Fui UX researcher y desarrolladora full stack. Participé en el trabajo de campo, evalué la usabilidad de DengueChat, diseñé prototipos, implementé mejoras en la plataforma y las validé con usuarios reales.',
+      role: {
+        intro:
+          'Fui UX researcher y desarrolladora full stack. Participé en el trabajo de campo, evalué la usabilidad de DengueChat, diseñé prototipos, implementé mejoras en la plataforma y las validé con usuarios reales.',
+        figures: [
+          {
+            src: 'assets/topadengue-rol-1.png',
+            alt: 'Notas adhesivas sobre una mesa agrupadas en lugares, navegación, formulario de inspección e ideas',
+          },
+          {
+            src: 'assets/topadengue-rol-2.png',
+            alt: 'Facilitadoras completando formularios en papel y en laptops durante una sesión de trabajo',
+          },
+        ],
+      },
       process: {
         items: [
           { title: 'Observación participante:', text: 'acompañé a voluntarios y facilitadores en sus visitas.' },
@@ -649,16 +683,34 @@ export const projects = [
             tag: 'A',
             title: 'Recolección de datos: ODK',
             text: 'Comparamos la app original, ODK Collect, NASA GLOBE Observer y Google Sheets. ODK fue la mejor opción para el contexto: funciona sin conexión, ocupa poco y se configura sin programar. Un mismo flujo sirve para el terreno y para digitalizar formularios en papel, con sincronización automática a DengueChat. Así concentramos el desarrollo en un solo módulo de sincronización.',
+            figure: {
+              src: 'assets/topadengue-odk.jpg',
+              alt: 'Tres pantallas de ODK Collect: el menú principal, un selector de fecha y preguntas del formulario de criaderos',
+              bg: 'mustard',
+              // Recorte del diseño en Figma.
+              imgStyle: { width: '110.51%', height: '95.33%', left: '-5.05%', top: '2.13%' },
+            },
           },
           {
             tag: 'B',
             title: 'Mensajes por WhatsApp',
             text: 'Diseñamos tres tipos de mensaje semanal: informativos, educativos y de motivación. Elegimos WhatsApp Business frente a Twilio por ser gratuito y transparente para el usuario. Probamos con Wizard of Oz: 48 mensajes a 32 voluntarios entre marzo y agosto de 2019. El 71% los encontró útiles. Los informativos y educativos fueron los más valorados; los de motivación casi no aparecieron en las respuestas abiertas.',
+            figure: {
+              src: 'assets/topadengue-whatsapp.jpg',
+              alt: 'Ejemplos de mensajes de WhatsApp de TopaDengue de tipo educativo, activo e informativo',
+              bg: 'mocha',
+              fit: 'contain',
+            },
           },
           {
             tag: 'C',
             title: 'Plataforma y logística',
             text: 'Diseñé un mapa para programar jornadas. Cada manzana muestra cantidad de casas, nivel de infestación, casas verdes, fecha de la última visita y número de visitas, y permite asignar voluntarios. Además, los puntos ahora premian a todo el grupo asignado a una manzana cuando aparecen casas verdes, no solo a quien subía los datos. Se sumaron una landing con fotos y videos, contenido compartible en redes y un ranking de puntos.',
+            figure: {
+              src: 'assets/topadengue-plataforma.jpg',
+              alt: 'Mapa de DengueChat para programar recorridos: las manzanas se colorean y una ventana muestra casas, criaderos, visitas y la opción de asignar voluntarios',
+              bg: 'sage-deep',
+            },
           },
         ],
       },
@@ -669,30 +721,69 @@ export const projects = [
           'Facilitadores y voluntarios valoraron el módulo como una buena forma de organizar el trabajo.',
           'Pasaron de recorrer las manzanas en orden a decidir según cuántas veces se visitó cada una.',
           'Voluntarios sin experiencia lograron organizar una jornada sin depender del conocimiento del territorio.',
-          'La proporción de visitas subió de 45,2% a 54,8% entre abril y julio de 2018 y 2019, con menos voluntarios.',
+        ],
+        comparison: {
+          value: '45,2% → 54,8%',
+          text: 'La proporción de visitas subió entre abril y julio de 2018 y 2019, con menos voluntarios.',
+          items: [
+            { label: '2018', value: 45.2 },
+            { label: '2019', value: 54.8 },
+          ],
+        },
+        figures: [
+          {
+            src: 'assets/topadengue-resultados.png',
+            alt: 'Sesiones de prueba: el grupo A usa la versión en papel y el grupo B la nueva versión de DengueChat',
+            bg: 'mustard',
+            fit: 'contain',
+            ratio: '808 / 272',
+          },
         ],
       },
       learnings: {
         items: [
           'El cuello de botella no era la app, era la logística.',
-          'Una herramienta existente puede ganarle a desarrollar la propia.',
-          'En comunidad, el canal importa: WhatsApp y las reuniones presenciales funcionaron mejor que la web.',
-          'Hay que diseñar para el dispositivo que ya usan: las tablets funcionaron mejor que las laptops.',
+          'Una herramienta existente puede ser mejor opción en lugar de invertir tiempo y recursos en desarrollar una propia.',
+          {
+            title: 'En comunidad, el canal importa:',
+            text: 'WhatsApp y las reuniones presenciales funcionaron mejor para organizar los voluntarios que publicando en la web las notificaciones.',
+          },
+          {
+            title: 'Diseñar para el dispositivo que ya usan:',
+            text: 'las tablets funcionaron mejor que las laptops por la familiaridad de las pantallas táctiles.',
+          },
         ],
-        note: 'Los nuevos diseños se introdujeron al final del programa. Falta replicar estos resultados en campo.',
+        note: {
+          label: 'Una limitación importante',
+          text: 'Los nuevos diseños se introdujeron al final del programa. Falta replicar estos resultados en campo.',
+        },
       },
-      // TODO: agregar las publicaciones del CV como { title, text, href }. No inventar títulos ni URLs.
-      publications: [],
+      publications: {
+        items: [
+          {
+            text: 'Rivas Amarilla, S. N., et al. (2020). ICTs for Community Development: Bridging conceptual, theoretical and methodological boundaries. Journal of the American Behavioral Scientist.',
+            href: 'https://doi.org/10.1177/0002764220952113',
+          },
+          {
+            text: 'Rivas Amarilla, S. N., et al. (2020). Evidence Socialization in a Community-based Dengue Prevention Initiative. CSCW Civic Technologies Workshop.',
+            href: 'https://cscwcivictechnologies.wordpress.com/papers/',
+          },
+          {
+            text: 'Rivas Amarilla, S. N., et al. (2020). Improving logistic ICTs for Community-based Dengue Prevention. CSCW Civic Technologies Workshop.',
+            href: 'https://cscwcivictechnologies.wordpress.com/papers/',
+          },
+          {
+            text: 'Rivas Amarilla, S. N., et al. (2019). Design and evaluation of data socialization technologies to reduce Aedes aegypti infestation in a community. IV Meeting of Researchers of Paraguay.',
+          },
+        ],
+      },
       nextSteps: {
         items: [
           'Un experimento controlado para medir el rol de las notificaciones.',
           'Explorar cómo apoyar con tecnología las reuniones presenciales de inicio y cierre de jornada.',
         ],
       },
-      images: [
-        { src: 'assets/topadengue-1.jpg', alt: '' },
-        { src: 'assets/topadengue-2.jpg', alt: '' },
-      ],
+      images: [],
     },
   },
 ]
