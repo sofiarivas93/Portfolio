@@ -4,6 +4,7 @@ import Nav from '../components/Nav.jsx'
 import Photo from '../components/Photo.jsx'
 import { caseStudy as t, site } from '../data/content.js'
 import { getProject, projects } from '../data/projects.js'
+import { asset } from '../lib.js'
 import arrow from '../assets/icons/arrow.svg'
 
 const toList = (value) => (Array.isArray(value) ? value : [value]).filter(Boolean)
@@ -81,6 +82,103 @@ function Comparison({ data }) {
           </div>
         ))}
       </div>
+    </div>
+  )
+}
+
+// Collage de mockups superpuestos. Cada imagen se ubica en % del lienzo.
+function Collage({ collage }) {
+  return (
+    <figure className="case-collage">
+      <div className="collage-canvas">
+        {collage.images.map((img) => (
+          <div key={img.src} className="collage-item" style={{ ...img.style, '--ratio': img.ratio }}>
+            <Photo src={img.src} alt={img.alt} />
+          </div>
+        ))}
+      </div>
+      {collage.caption && <figcaption>{collage.caption}</figcaption>}
+    </figure>
+  )
+}
+
+// Del antes (fuentes dispersas) al después (un solo lugar), con una flecha al medio.
+function Shift({ data }) {
+  return (
+    <div className="case-shift">
+      <div className="shift-before">
+        <p className="shift-label">{data.before.label}</p>
+        <ul>
+          {data.before.items.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </div>
+      <div className="shift-arrow">
+        <span aria-hidden="true">→</span>
+        <p>{data.arrow}</p>
+      </div>
+      <div className="shift-after">
+        <p className="shift-label">{data.after.label}</p>
+        <div className="shift-card">
+          {data.after.lines.map((line) => (
+            <p key={line} className="shift-line">
+              {line}
+            </p>
+          ))}
+          <p className="shift-note">{data.after.text}</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Ciclo de cuatro pasos en rombo (arriba, derecha, abajo, izquierda) con su explicación.
+function Cycle({ cycle }) {
+  return (
+    <div className="case-cycle">
+      <div className="cycle-diagram">
+        <ol>
+          {cycle.steps.map((step) => (
+            <li key={step}>{step}</li>
+          ))}
+        </ol>
+        {['↗', '↘', '↙', '↖'].map((a) => (
+          <span key={a} className="cycle-arrow" aria-hidden="true">
+            {a}
+          </span>
+        ))}
+      </div>
+      <div className="cycle-text">
+        <p className="cycle-label">{cycle.label}</p>
+        <p className="cycle-title">{cycle.title}</p>
+        <Paragraphs value={cycle.text} className="cycle-detail" />
+      </div>
+    </div>
+  )
+}
+
+// Mockup completo y, al lado, un recorte ampliado con el área de atención marcada.
+function Mockup({ mockup }) {
+  const { zoom } = mockup
+  return (
+    <div className="case-mockup">
+      <figure className="mockup-full" style={{ '--ratio': mockup.ratio }}>
+        <figcaption className="mockup-label">{t.mockup}</figcaption>
+        <Photo src={mockup.src} alt={mockup.alt} />
+      </figure>
+      {zoom && (
+        <figure className="mockup-zoom">
+          <p className="mockup-label" aria-hidden="true">
+            {t.zoom}
+          </p>
+          <div className="zoom-frame" style={{ '--ratio': zoom.ratio }}>
+            <Photo src={mockup.src} alt="" imgStyle={zoom.imgStyle} />
+            {zoom.focus && <img className="zoom-focus" src={asset(zoom.focus)} alt="" style={zoom.focusStyle} />}
+          </div>
+          <figcaption>{zoom.caption}</figcaption>
+        </figure>
+      )}
     </div>
   )
 }
@@ -198,6 +296,7 @@ function Item({ item, title: caseTitle }) {
           )}
           <Gallery images={item.images} title={caseTitle} />
         </div>
+        {item.mockup && <Mockup mockup={item.mockup} />}
         {item.figure && <Figure figure={item.figure} />}
       </li>
     )
@@ -238,6 +337,8 @@ function Content({ value, title }) {
     items = [],
     numbered,
     questions = [],
+    shift,
+    cycle,
     flow,
     chart,
     comparison,
@@ -250,6 +351,8 @@ function Content({ value, title }) {
   const empty =
     !intro &&
     !note &&
+    !shift &&
+    !cycle &&
     !flow &&
     !chart &&
     !comparison &&
@@ -260,6 +363,7 @@ function Content({ value, title }) {
   return (
     <>
       <Paragraphs value={intro} />
+      {shift && <Shift data={shift} />}
       {steps.length > 0 && (
         <ol className="case-steps">
           {steps.map((step) => (
@@ -270,7 +374,11 @@ function Content({ value, title }) {
       {cards.length > 0 && (
         <div className="case-cards">
           {cards.map((card) => (
-            <div key={card.title} className="note">
+            <div
+              key={card.title}
+              className={card.color ? 'note flat' : 'note'}
+              style={card.color ? { background: `var(--${card.color})` } : undefined}
+            >
               <b>{card.title}</b>
               <p>{card.text}</p>
             </div>
@@ -294,6 +402,7 @@ function Content({ value, title }) {
           </ul>
         </>
       )}
+      {cycle && <Cycle cycle={cycle} />}
       {comparison && <Comparison data={comparison} />}
       <Figures figures={figures} />
       {flow && (
@@ -394,18 +503,20 @@ export default function CaseStudy() {
           </Link>
 
           <p className="case-meta">{project.meta}</p>
-          <header className="case-head">
+          <header className={summary.collage ? 'case-head no-cover' : 'case-head'}>
             <div>
               <h1>{project.title}</h1>
               <p className="sub">{project.description}</p>
               <Paragraphs value={summary.intro} className="case-intro" />
             </div>
-            <figure
-              className="note case-cover"
-              style={{ background: `var(--${project.coverColor ?? project.color})` }}
-            >
-              <Photo key={project.image} src={project.image} alt={project.imageAlt} />
-            </figure>
+            {!summary.collage && (
+              <figure
+                className="note case-cover"
+                style={{ background: `var(--${project.coverColor ?? project.color})` }}
+              >
+                <Photo key={project.image} src={project.image} alt={project.imageAlt} />
+              </figure>
+            )}
           </header>
 
           {summary.facts?.length > 0 && (
@@ -429,6 +540,8 @@ export default function CaseStudy() {
               ))}
             </ul>
           )}
+
+          {summary.collage && <Collage collage={summary.collage} />}
 
           {SECTIONS.filter((s) => !s.optional || c[s.key] !== undefined).map((s) => (
             <Block key={s.key} name={s.key} title={titleOf(s.key)} wideFigure={c[s.key]?.wideFigure}>

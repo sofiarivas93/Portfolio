@@ -39,7 +39,7 @@ Estilo minimalista de "escritorio de papel": fondo beige, notas adhesivas, polar
 - No inventar métricas, resultados ni testimonios. Usar solo datos del CV y de los casos que Sofia haya entregado.
 - No publicar teléfono ni dirección. El correo público es sofiarivas1993@gmail.com.
 - Enlaces pendientes: Behance y LinkedIn (buscar `data-todo` o `TODO`). No inventar URLs.
-- Proyectos y slugs: `che-roga-pora-exterior`, `marketplace-che-roga-pora`, `salud-ocupacional`, `talentview-tracker`, `topadengue`.
+- Proyectos y slugs: `che-roga-pora-exterior`, `marketplace-che-roga-pora`, `salud-ocupacional`, `staffing-cockpit`, `topadengue`.
 - Estructura de cada caso de estudio: contexto, problema, mi rol, proceso (investigación y métodos), solución, resultados, aprendizajes, imágenes.
 
 ## Cómo trabajar

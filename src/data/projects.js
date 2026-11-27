@@ -21,6 +21,11 @@
 //   'contain'. ratio: proporción de la imagen (si falta, alto fijo de 225px). imgStyle: recorte manual.
 //   numbered: true numera los items en círculos. comparison: { value, text, items: [{ label, value }] }
 //   compara porcentajes con barras. note también acepta { label, text } para mostrarla en un recuadro.
+//   summary.collage ({ caption, images: [{ src, alt, ratio, style }] }) reemplaza la portada por un collage
+//   de mockups bajo los datos del resumen. shift ({ before: { label, items }, arrow, after: { label, lines,
+//   text } }) muestra el antes y el después. cycle ({ steps, label, title, text }) dibuja un ciclo de 4 pasos.
+//   Un item con tag acepta mockup ({ src, alt, ratio, zoom: { caption, ratio, imgStyle, focus, focusStyle } }):
+//   el mockup completo y un recorte ampliado con el área de atención. Una card acepta color (fondo plano).
 //   Un item { text, href } sin title muestra el texto seguido del enlace (por ejemplo, publicaciones).
 //   titles (opcional) reemplaza el título de una sección, por ejemplo { solution: 'Tres intervenciones' }.
 //   cta (opcional): { text, link } al final del caso; el enlace abre el correo.
@@ -369,7 +374,7 @@ export const projects = [
     caseStudy: emptyCase('salud-ocupacional'),
   },
   {
-    slug: 'talentview-tracker',
+    slug: 'staffing-cockpit',
     title: 'Staffing Cockpit',
     meta: '2023 — 2024 · Dashboard · Power BI · B2B',
     description: 'Decisiones de staffing con datos claros, en un solo tablero.',
@@ -379,7 +384,7 @@ export const projects = [
     summary: 'Una experiencia que conecta personas y tecnología.',
     color: 'steel',
     coverColor: 'sage-deep',
-    image: 'assets/talentview.jpg',
+    image: 'assets/staffing-cockpit.jpg',
     imageAlt: 'Collage de las cuatro vistas del tablero en Power BI, con la vista de costos y posiciones al frente',
     caseStudy: {
       summary: {
@@ -387,29 +392,62 @@ export const projects = [
           'Staffing y operaciones medían sus indicadores después de los hechos y con información dispersa. Diseñé un tablero en Power BI que reúne disponibilidad, banca, KPIs de colocación y demanda, y lo validé con usuarios antes de construir cada vista.',
         facts: [
           { label: 'Rol', value: 'UX/UI Designer' },
-          { label: 'Período', value: 'Enero 2023 a marzo 2024' },
+          { label: 'Período', value: '2023–2024' },
           { label: 'Herramientas', value: 'Figma, Power BI, Jira, Google Forms' },
         ],
         highlights: [
-          { value: '4', label: 'vistas' },
-          { value: '4', label: 'rondas de pruebas de usabilidad' },
-          { value: '28', label: 'participaciones' },
+          { value: '4', label: 'Dashboards' },
+          { value: '4', label: 'Rondas de pruebas de usabilidad' },
+          { value: '28', label: 'Participantes' },
         ],
+        // Posiciones del diseño en Figma, en % de un lienzo de 1120 × 653.
+        collage: {
+          images: [
+            {
+              src: 'assets/staffing-cockpit-collage-1.png',
+              alt: 'Mockup de la vista de disponibilidad en FTE, con filtros a la izquierda y tablas de resumen y detalle',
+              ratio: '1600 / 1124',
+              style: { left: '2.5%', top: '5.67%', width: '44.29%' },
+            },
+            {
+              src: 'assets/staffing-cockpit-collage-2.png',
+              alt: 'Mockup del mapa de calor de banca por región y nivel, semana a semana',
+              ratio: '1600 / 1259',
+              style: { left: '53.04%', top: '5.67%', width: '44.38%' },
+            },
+            {
+              src: 'assets/staffing-cockpit-collage-3.png',
+              alt: 'Mockup de la vista de posiciones con cuatro gráficos mensuales y la meta del 80% marcada',
+              ratio: '1600 / 1429',
+              style: { left: '51.52%', top: '37.21%', width: '44.2%' },
+            },
+            {
+              src: 'assets/staffing-cockpit-collage-4.png',
+              alt: 'Mockup de la vista de costo y ingreso de oportunidad, con dos tarjetas de KPI',
+              ratio: '1600 / 1083',
+              style: { left: '11.96%', top: '29.86%', width: '64.82%' },
+            },
+          ],
+        },
       },
       titles: { solution: 'Las cuatro vistas', results: 'Validación' },
-      context:
-        'Para decidir, el equipo de staffing y la dirección dependían de planillas de Excel, sistemas con información de las personas y organigramas.',
+      context: {
+        intro:
+          'Para decidir, el equipo de staffing y la dirección dependían de planillas de Excel, sistemas con información de las personas y organigramas.',
+        shift: {
+          before: { label: 'Antes · información dispersa', items: ['Planillas de Excel', 'Conocimiento de Managers', 'Organigramas'] },
+          arrow: 'Solución',
+          after: {
+            label: 'Después · Staffing Cockpit',
+            lines: ['Disponibilidad · Banca', 'Costos y posiciones · Demanda'],
+            text: 'La información que cada rol necesita para decidir a tiempo.',
+          },
+        },
+      },
       problem: {
         intro:
           'Los KPIs se medían tarde, los datos llegaban incompletos o desactualizados, y cada vez que el directorio pedía información había que armarla de nuevo.',
         questions: ['¿Cómo podríamos convertir datos dispersos en información clara y actual para decidir a tiempo?'],
-        images: [
-          {
-            src: 'assets/talentview-tracker-antes.jpg',
-            alt: 'Diagrama del antes: Excel, sistemas y organigramas convergiendo en un solo tablero',
-            caption: 'Antes: datos dispersos en Excel, sistemas y organigramas',
-          },
-        ],
       },
       role: 'Fui la diseñadora UX/UI. Me encargué de la investigación con stakeholders, del sistema visual, de los prototipos y de las pruebas de usabilidad.',
       process: {
@@ -420,7 +458,7 @@ export const projects = [
           },
           {
             title: 'Entender los datos.',
-            text: 'Trabajé con Data Science para saber qué datos existían, qué valor de negocio daban y cómo representarlos.',
+            text: 'Trabajé en conjunto con el equipo de Data Science para saber qué datos existían, qué valor de negocio daban y cómo representarlos.',
           },
           {
             title: 'Definir el sistema visual.',
@@ -428,43 +466,32 @@ export const projects = [
           },
           {
             title: 'Validar en ciclos.',
-            text: 'Para cada vista: prueba del prototipo en Figma, priorización con el equipo de producto por impacto y esfuerzo, tickets en Jira, construcción en Power BI y una demo con datos reales.',
+            text: 'Para cada vista: user testing del prototipo en Figma, priorización con el equipo de producto por impacto y esfuerzo, tickets en Jira, construcción en Power BI y una demo con datos reales.',
           },
         ],
-        images: [
-          { src: 'assets/talentview-tracker-ciclo.jpg', alt: 'Diagrama circular del ciclo de validación', caption: 'Ciclo de validación' },
-          {
-            src: 'assets/talentview-tracker-priorizacion.jpg',
-            alt: 'Hoja de priorización por impacto y esfuerzo, con el contenido anonimizado',
-            caption: 'Hoja de priorización (anonimizada)',
-          },
-        ],
+        // Pasos en el orden del ciclo, empezando arriba y en el sentido de las agujas del reloj.
+        cycle: {
+          steps: ['Prototipo Figma', 'Prueba con usuarios', 'Priorizar + Jira', 'Power BI + demo'],
+          label: 'Validar antes de construir',
+          title: 'Cada ronda alimentó la siguiente decisión.',
+          text: [
+            'Frecuencia, impacto y persistencia para comprender el problema.',
+            'Impacto y esfuerzo para acordar qué aporta más valor al producto.',
+          ],
+        },
       },
       methods: [],
       findings: {
         intro: 'Dos arquetipos basados en stakeholders reales, cuyos nombres se mantienen en reserva:',
         cards: [
-          { title: 'COO', text: 'Necesita resúmenes para decidir rápido.' },
-          { title: 'Líder de staffing', text: 'Necesita detalle por persona y posición.' },
+          { title: 'COO', text: 'Necesita resúmenes para decidir rápido.', color: 'rose' },
+          { title: 'Líder de staffing', text: 'Necesita detalle por persona y posición.', color: 'mustard' },
         ],
         items: [
-          { title: 'Cada rol necesita un nivel distinto de detalle.', text: '' },
-          {
-            title: 'Un número sin definición genera dudas.',
-            text: 'FTE contra headcount, las regiones y la meta del 80% fueron los ejemplos más claros.',
-          },
+          'Cada rol necesita un nivel distinto de detalle.',
+          'Un número sin definición genera dudas. FTE contra headcount, las regiones y la meta del 80% fueron los ejemplos más claros.',
           { title: 'Mirar el pasado no alcanza.', text: 'Para planificar capacidad pedían proyección a futuro.' },
-          {
-            title: 'Los filtros pueden ser el principal obstáculo.',
-            text: 'En la primera ronda, el selector de grupos de negocio recibió la máxima severidad.',
-          },
-        ],
-        images: [
-          {
-            src: 'assets/talentview-tracker-mapa-decisiones.jpg',
-            alt: 'Mapa de qué dato responde qué decisión',
-            caption: 'Qué dato responde qué decisión',
-          },
+          'Los filtros pueden ser el principal obstáculo. En la primera ronda, el selector de grupos de negocio recibió la máxima severidad.',
         ],
       },
       solution: {
@@ -476,10 +503,19 @@ export const projects = [
             text: 'Probada con 16 personas. La tasa de completitud fue de 87,5% en la primera tarea y bajó hasta 50% en la que combinaba competencia y ubicación.',
             change:
               'Selector de grupos de negocio con selección múltiple y "Seleccionar todo", más un botón para limpiar filtros.',
-            images: [
-              { src: 'assets/talentview-tracker-vista-1-figma.jpg', alt: 'Vista de disponibilidad: mockup probado en Figma', caption: 'Mockup probado en Figma' },
-              { src: 'assets/talentview-tracker-vista-1-powerbi.jpg', alt: 'Vista de disponibilidad: versión final en Power BI', caption: 'Versión final en Power BI' },
-            ],
+            // Recortes del diseño en Figma, en % del marco del detalle.
+            mockup: {
+              src: 'assets/staffing-cockpit-disponibilidad.png',
+              alt: 'Mockup de la vista de disponibilidad en FTE',
+              ratio: '1800 / 1264',
+              zoom: {
+                caption: 'Filtros · el principal punto de fricción',
+                ratio: '349 / 251',
+                imgStyle: { width: '448.71%', left: '-24.07%', top: '-46.43%' },
+                focus: 'assets/staffing-cockpit-foco-1.svg',
+                focusStyle: { width: '57.02%', height: '39.04%', left: '0%', top: '5.37%' },
+              },
+            },
           },
           {
             tag: '2',
@@ -487,10 +523,18 @@ export const projects = [
             question: '¿Cuánta capacidad tenemos y cuándo?',
             text: 'Tabla, gráfico y mapa de calor. Probada con 5 personas, que quisieron saber qué era FTE y qué era headcount.',
             change: 'Texto explicativo, leyendas de regiones, totales en porcentaje y meses de 3 letras en las fechas.',
-            images: [
-              { src: 'assets/talentview-tracker-vista-2-figma.jpg', alt: 'Vista de banca: mockup probado en Figma', caption: 'Mockup probado en Figma' },
-              { src: 'assets/talentview-tracker-vista-2-powerbi.jpg', alt: 'Vista de banca: versión final en Power BI', caption: 'Versión final en Power BI' },
-            ],
+            mockup: {
+              src: 'assets/staffing-cockpit-banca.png',
+              alt: 'Mockup de la vista de banca con el mapa de calor por región y nivel',
+              ratio: '1800 / 1416',
+              zoom: {
+                caption: 'Mapa de calor · lectura por región y nivel',
+                ratio: '349 / 244',
+                imgStyle: { width: '300.86%', left: '-48.42%', top: '-74.81%' },
+                focus: 'assets/staffing-cockpit-foco-2.svg',
+                focusStyle: { width: '77.94%', height: '48.36%', left: '2.87%', top: '7.57%' },
+              },
+            },
           },
           {
             tag: '3',
@@ -499,10 +543,18 @@ export const projects = [
             text: 'Tarjetas para el estado actual y gráficos por mes. Probada con 3 personas.',
             change:
               'Flechas frente al período anterior, etiqueta "Goal" en la línea del 80% y un título más claro para el gráfico de posiciones.',
-            images: [
-              { src: 'assets/talentview-tracker-vista-3-figma.jpg', alt: 'Vista de costos, ingresos y posiciones: mockup probado en Figma', caption: 'Mockup probado en Figma' },
-              { src: 'assets/talentview-tracker-vista-3-powerbi.jpg', alt: 'Vista de costos, ingresos y posiciones: versión final en Power BI', caption: 'Versión final en Power BI' },
-            ],
+            mockup: {
+              src: 'assets/staffing-cockpit-costos.png',
+              alt: 'Mockup de la vista de posiciones con cuatro gráficos mensuales',
+              ratio: '1800 / 1608',
+              zoom: {
+                caption: 'Posiciones · la meta del 80% necesitaba una etiqueta',
+                ratio: '349 / 251',
+                imgStyle: { width: '315.19%', left: '-161.03%', top: '-82.68%' },
+                focus: 'assets/staffing-cockpit-foco-3.svg',
+                focusStyle: { width: '110.03%', height: '43.82%', left: '2.87%', top: '28.08%' },
+              },
+            },
           },
           {
             tag: '4',
@@ -511,10 +563,6 @@ export const projects = [
             text: 'Probada con 4 personas.',
             change:
               'Nombre descriptivo para la tabla inferior, ícono de ayuda en el filtro de período y filtros por cliente y por dueño del deal.',
-            images: [
-              { src: 'assets/talentview-tracker-vista-4-figma.jpg', alt: 'Planificador de demanda: mockup probado en Figma', caption: 'Mockup probado en Figma' },
-              { src: 'assets/talentview-tracker-vista-4-powerbi.jpg', alt: 'Planificador de demanda: versión final en Power BI', caption: 'Versión final en Power BI' },
-            ],
           },
         ],
       },
@@ -545,27 +593,14 @@ export const projects = [
       },
       learnings: {
         items: [
-          {
-            title: 'Cada número necesita su definición.',
-            text: 'Etiquetas, leyendas y metas pesan tanto como el gráfico.',
-          },
-          {
-            title: 'Un mismo dato se ve distinto según el rol.',
-            text: 'Resumen para dirección, detalle para staffing.',
-          },
-          {
-            title: 'Probar antes de construir cuestiona lo que parecía obvio.',
-            text: 'Por ejemplo, si "Needs more info" merecía ser un KPI.',
-          },
-          {
-            title: 'Diseñar dentro de la herramienta.',
-            text: 'Power BI impone límites, como las celdas de tamaño fijo, y se diseña con ellos.',
-          },
+          'Cada número necesita su definición. Etiquetas, leyendas y metas pesan tanto como el gráfico.',
+          'Un mismo dato se ve distinto según el rol. Resumen para dirección, detalle para staffing.',
+          'Probar antes de construir cuestiona lo que parecía obvio. Por ejemplo, si "Needs more info" merecía ser un KPI.',
+          'Diseñar dentro de la herramienta. Power BI impone límites, como las celdas de tamaño fijo, y se diseña con ellos.',
         ],
       },
       nextSteps:
         'Una vista con proyección a futuro para planificar capacidad, y distinguir posiciones cubiertas de abiertas, que quedó fuera del MVP.',
-      cta: { text: '¿Tienes datos complejos que nadie entiende?', link: 'Hablemos.' },
       images: [],
     },
   },

@@ -60,13 +60,11 @@ export const about = {
   ],
   cta: '¿Tienes una idea para un proyecto? ¡Trabajemos juntos!',
   email: 'Email',
-  // TODO: data-todo marca los enlaces pendientes de confirmar.
   links: [
     {
       label: 'LinkedIn',
       icon: 'linkedin',
-      href: 'https://www.linkedin.com/in/sofianoeliarivas',
-      todo: 'Verifica esta URL de LinkedIn',
+      href: 'https://www.linkedin.com/in/sofianoeliarivas/',
     },
   ],
   cvLink: 'Descarga mi CV',
@@ -108,6 +106,8 @@ export const caseStudy = {
   summary: 'Resumen del proyecto',
   methods: 'Métodos',
   change: 'Cambios tras la prueba:',
+  mockup: 'Mockup en Figma',
+  zoom: 'Detalle ampliado del mockup',
   next: 'Siguiente proyecto',
   notFound: {
     title: 'No encontré este proyecto.',
