@@ -105,6 +105,7 @@ export const caseStudy = {
   },
   summary: 'Resumen del proyecto',
   methods: 'Métodos',
+  tested: 'Lo que mostró la prueba:',
   change: 'Cambios tras la prueba:',
   mockup: 'Mockup en Figma',
   zoom: 'Detalle ampliado del mockup',

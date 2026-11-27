@@ -289,6 +289,11 @@ function Item({ item, title: caseTitle }) {
         <div className="tagged-body">
           {item.question && <p className="case-question">{item.question}</p>}
           <Paragraphs value={item.text} />
+          {item.tested && (
+            <p>
+              <b>{t.tested}</b> {item.tested}
+            </p>
+          )}
           {item.change && (
             <p>
               <b>{t.change}</b> {item.change}
@@ -474,7 +479,7 @@ export default function CaseStudy() {
         <Nav />
         <main className="case">
           <div className="wrap">
-            <Link className="back" to="/#proyectos">
+            <Link className="back" to="/home#proyectos">
               <img src={arrow} alt="" />
               {t.back}
             </Link>
@@ -497,7 +502,7 @@ export default function CaseStudy() {
       <Nav />
       <main className="case">
         <div className="wrap">
-          <Link className="back" to="/#proyectos">
+          <Link className="back" to="/home#proyectos">
             <img src={arrow} alt="" />
             {t.back}
           </Link>
@@ -571,7 +576,7 @@ export default function CaseStudy() {
             </p>
           )}
 
-          <Link className="card case-next" to={`/proyecto/${next.slug}`} style={{ background: `var(--${next.color})` }}>
+          <Link className="card case-next" to={`/home/${next.slug}`} style={{ background: `var(--${next.color})` }}>
             <small>{t.next}</small>
             <h3>{next.title}</h3>
             <p>{next.description}</p>

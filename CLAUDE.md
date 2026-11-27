@@ -4,7 +4,9 @@ Portfolio web de Sofia Rivas, Product Designer e Ingeniera de Software (Paraguay
 
 ## Stack y comandos
 
-- Vite + React, con `react-router-dom` usando **HashRouter** (GitHub Pages no soporta rutas del lado del cliente sin esto).
+- Vite + React, con `react-router-dom` usando **BrowserRouter** (`basename` = `base` de Vite sin la barra final). URLs limpias: `/Portfolio/home` y `/Portfolio/home/<slug>`; cualquier otra ruta redirige a `/home`.
+- GitHub Pages no conoce las rutas de React: el plugin `spaRoutes` de `vite.config.js` copia `index.html` a `dist/home/`, `dist/home/<slug>/` y `dist/404.html` al hacer el build. Si agregas una ruta nueva, agrégala ahí.
+- `src/main.jsx` convierte los links viejos del HashRouter (`#/proyecto/<slug>`, `#/#<sección>`) y quita la barra final que agrega GitHub Pages.
 - CSS plano en `src/styles.css` con variables CSS. No agregar Tailwind ni librerías de UI sin preguntar.
 - `npm run dev`: servidor local en http://localhost:5173
 - `npm run build`: build de producción (ejecutarlo antes de dar por terminado un cambio grande).
@@ -15,7 +17,8 @@ Portfolio web de Sofia Rivas, Product Designer e Ingeniera de Software (Paraguay
 - `referencia/index.html`: diseño original de la home. Es la referencia visual; no modificarlo.
 - `src/components/`: Nav, Hero, About, Projects, Photo, Icon.
 - `src/data/projects.js`: lista de proyectos (slug, título, meta, descripción, color, imagen).
-- `src/pages/CaseStudy.jsx`: plantilla de caso de estudio, ruta `/proyecto/:slug`.
+- `src/pages/CaseStudy.jsx`: plantilla de caso de estudio, ruta `/home/:slug`.
+- `src/pages/Home.jsx`: la home, ruta `/home`. Las secciones se enlazan como `/home#proyectos` y `/home#sobre-mi`.
 - `public/assets/`: imágenes y CV. Rutas finales: `assets/sofia.jpg`, `assets/<slug>.jpg`, `assets/Sofia-Rivas-CV.pdf`. Respetar el `base` de Vite al referenciarlas.
 
 ## Idioma
@@ -39,7 +42,7 @@ Estilo minimalista de "escritorio de papel": fondo beige, notas adhesivas, polar
 - No inventar métricas, resultados ni testimonios. Usar solo datos del CV y de los casos que Sofia haya entregado.
 - No publicar teléfono ni dirección. El correo público es sofiarivas1993@gmail.com.
 - Enlaces pendientes: Behance y LinkedIn (buscar `data-todo` o `TODO`). No inventar URLs.
-- Proyectos y slugs: `che-roga-pora-exterior`, `marketplace-che-roga-pora`, `salud-ocupacional`, `staffing-cockpit`, `topadengue`.
+- Proyectos y slugs: `che-roga-pora-exterior`, `marketplace-che-roga-pora`, `salud-ocupacional`, `staffing-cockpit`, `topadengue`. En la rama `release-1` solo se publican `staffing-cockpit` y `topadengue`; los demás llevan `hidden: true` en `projects.js` hasta que su caso esté listo.
 - Estructura de cada caso de estudio: contexto, problema, mi rol, proceso (investigación y métodos), solución, resultados, aprendizajes, imágenes.
 
 ## Cómo trabajar

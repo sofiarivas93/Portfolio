@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 
-// Con HashRouter, las anclas de sección viven después de la ruta: #/#proyectos.
+// Las anclas de sección van después de la ruta: /home#proyectos.
 // Al navegar se desplaza a la sección indicada o, si no hay ninguna, al inicio de la página.
 export default function ScrollManager() {
   const { pathname, hash, key } = useLocation()

@@ -12,7 +12,7 @@ export default function Projects() {
         <p className="lead">{projectsSection.lead}</p>
         <div className="projects">
           {featured.map((p, i) => (
-            <Link key={p.slug} className="project" to={`/proyecto/${p.slug}`}>
+            <Link key={p.slug} className="project" to={`/home/${p.slug}`}>
               <div className="project-cover" style={{ background: `var(--${p.coverColor})` }}>
                 <small>
                   {String(i + 1).padStart(2, '0')} / {p.discipline}

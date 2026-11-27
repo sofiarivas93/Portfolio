@@ -1,6 +1,7 @@
 // Proyectos del portfolio.
 //
 // - color: nota de fondo de la tarjeta (sage, lilac, peach, steel, butter). Define también su inclinación.
+// - hidden: true oculta el proyecto en todo el sitio (home, rutas y build) hasta que su caso esté listo.
 // - featured: posición en la home (1, 2, …). discipline, headline, summary y coverColor son los textos y el color de esa tarjeta.
 // - image: imagen de la tarjeta y portada del caso de estudio (dentro de public/).
 // - caseStudy: contenido del caso. Cada sección acepta:
@@ -14,7 +15,7 @@
 //   una lista de viñetas debajo del texto.
 //   El objeto de una sección también acepta cards ([{ title, text }]), chart ({ title, goal, goalLabel,
 //   items: [{ label, value }] }), table ({ caption, columns, rows }), quotes ([{ text, author }]) e
-//   images ([{ src, alt, caption }]). Un item con tag acepta además question, change e images.
+//   images ([{ src, alt, caption }]). Un item con tag acepta además question, tested ("Lo que mostró la prueba"), change e images.
 //   Figuras con marco de color (sin inclinar): figures ([{ src, alt, bg, fit, ratio, imgStyle }]) va dentro
 //   del texto; wideFigure ocupa el ancho completo de la sección; un item con tag acepta figure, que va a
 //   su derecha. bg: variable de color (mocha, mustard…; por defecto paper). fit: 'cover' (por defecto) o
@@ -48,9 +49,10 @@ const emptyCase = (slug) => ({
   ],
 })
 
-export const projects = [
+const allProjects = [
   {
     slug: 'che-roga-pora-exterior',
+    hidden: true, // Caso aún no trabajado: oculto en esta versión.
     title: 'Che Róga Porã',
     meta: '2025 — 2026 · Web · B2G',
     description: 'Crédito de vivienda para paraguayos en el exterior.',
@@ -213,6 +215,7 @@ export const projects = [
   },
   {
     slug: 'marketplace-che-roga-pora',
+    hidden: true, // Caso aún no trabajado: oculto en esta versión.
     title: 'Marketplace Che Róga Porã',
     meta: '2026 — En curso · Web · B2G',
     description: 'Un solo lugar para encontrar una vivienda o una constructora y pedir el crédito.',
@@ -365,6 +368,7 @@ export const projects = [
   },
   {
     slug: 'salud-ocupacional',
+    hidden: true, // Caso aún no trabajado: oculto en esta versión.
     title: 'Salud ocupacional',
     meta: 'Web · Recursos humanos · WhatsApp',
     description: 'Agendamiento automático de citas médicas',
@@ -380,7 +384,7 @@ export const projects = [
     description: 'Decisiones de staffing con datos claros, en un solo tablero.',
     featured: 3,
     discipline: 'Product design',
-    headline: 'Decisiones de staffing con datos claros, en un solo dashboard',
+    headline: 'Decisiones de staffing con datos claros, en un solo tablero.',
     summary: 'Una experiencia que conecta personas y tecnología.',
     color: 'steel',
     coverColor: 'sage-deep',
@@ -389,7 +393,7 @@ export const projects = [
     caseStudy: {
       summary: {
         intro:
-          'Staffing y operaciones medían sus indicadores después de los hechos y con información dispersa. Diseñé un tablero en Power BI que reúne disponibilidad, banca, KPIs de colocación y demanda, y lo validé con usuarios antes de construir cada vista.',
+          'Staffing y el equipo de operaciones trabajaban días para obtener sus indicadores y tenían que consultar varias fuentes de información que muchas veces no tenían información actualizada. Diseñé un tablero en Power BI que reúne disponibilidad, banca, KPIs de colocación y demanda, estos dashboards fueron validados con usuarios antes de construir cada vista.',
         facts: [
           { label: 'Rol', value: 'UX/UI Designer' },
           { label: 'Período', value: '2023–2024' },
@@ -402,6 +406,7 @@ export const projects = [
         ],
         // Posiciones del diseño en Figma, en % de un lienzo de 1120 × 653.
         collage: {
+          caption: 'Diseños en Figma · Disponibilidad, banca y costos/posiciones.',
           images: [
             {
               src: 'assets/staffing-cockpit-collage-1.png',
@@ -433,7 +438,7 @@ export const projects = [
       titles: { solution: 'Las cuatro vistas', results: 'Validación' },
       context: {
         intro:
-          'Para decidir, el equipo de staffing y la dirección dependían de planillas de Excel, sistemas con información de las personas y organigramas.',
+          'Para tomar decisiones de contratación o capacidad para tomar un nuevo proyecto o cliente, el equipo de staffing y de operaciones dependían de planillas de Excel, reuniones con managers y organigramas.',
         shift: {
           before: { label: 'Antes · información dispersa', items: ['Planillas de Excel', 'Conocimiento de Managers', 'Organigramas'] },
           arrow: 'Solución',
@@ -500,7 +505,8 @@ export const projects = [
             tag: '1',
             title: 'Disponibilidad',
             question: '¿Quién está libre y cuándo?',
-            text: 'Probada con 16 personas. La tasa de completitud fue de 87,5% en la primera tarea y bajó hasta 50% en la que combinaba competencia y ubicación.',
+            tested:
+              'La tasa de completitud fue de 87,5% en la primera tarea y bajó hasta 50% en la tarea que combinaba utilizar varios filtros a la vez.',
             change:
               'Selector de grupos de negocio con selección múltiple y "Seleccionar todo", más un botón para limpiar filtros.',
             // Recortes del diseño en Figma, en % del marco del detalle.
@@ -509,7 +515,7 @@ export const projects = [
               alt: 'Mockup de la vista de disponibilidad en FTE',
               ratio: '1800 / 1264',
               zoom: {
-                caption: 'Filtros · el principal punto de fricción',
+                caption: 'Filtros: el principal punto de fricción',
                 ratio: '349 / 251',
                 imgStyle: { width: '448.71%', left: '-24.07%', top: '-46.43%' },
                 focus: 'assets/staffing-cockpit-foco-1.svg',
@@ -521,14 +527,14 @@ export const projects = [
             tag: '2',
             title: 'Banca',
             question: '¿Cuánta capacidad tenemos y cuándo?',
-            text: 'Tabla, gráfico y mapa de calor. Probada con 5 personas, que quisieron saber qué era FTE y qué era headcount.',
+            tested: 'Las personas quisieron saber qué era FTE y qué era headcount.',
             change: 'Texto explicativo, leyendas de regiones, totales en porcentaje y meses de 3 letras en las fechas.',
             mockup: {
               src: 'assets/staffing-cockpit-banca.png',
               alt: 'Mockup de la vista de banca con el mapa de calor por región y nivel',
               ratio: '1800 / 1416',
               zoom: {
-                caption: 'Mapa de calor · lectura por región y nivel',
+                caption: 'Mapa de calor: lectura por región y nivel',
                 ratio: '349 / 244',
                 imgStyle: { width: '300.86%', left: '-48.42%', top: '-74.81%' },
                 focus: 'assets/staffing-cockpit-foco-2.svg',
@@ -540,7 +546,7 @@ export const projects = [
             tag: '3',
             title: 'Costos, ingresos y posiciones',
             question: '¿Estamos cumpliendo la meta?',
-            text: 'Tarjetas para el estado actual y gráficos por mes. Probada con 3 personas.',
+            tested: 'La comparación con el período anterior y la lectura de la meta necesitaban más contexto.',
             change:
               'Flechas frente al período anterior, etiqueta "Goal" en la línea del 80% y un título más claro para el gráfico de posiciones.',
             mockup: {
@@ -548,11 +554,11 @@ export const projects = [
               alt: 'Mockup de la vista de posiciones con cuatro gráficos mensuales',
               ratio: '1800 / 1608',
               zoom: {
-                caption: 'Posiciones · la meta del 80% necesitaba una etiqueta',
+                caption: 'Posiciones: la meta del 80% necesitaba una etiqueta',
                 ratio: '349 / 251',
                 imgStyle: { width: '315.19%', left: '-161.03%', top: '-82.68%' },
                 focus: 'assets/staffing-cockpit-foco-3.svg',
-                focusStyle: { width: '110.03%', height: '43.82%', left: '2.87%', top: '28.08%' },
+                focusStyle: { width: '89.4%', height: '43.82%', left: '0%', top: '13.33%' },
               },
             },
           },
@@ -560,17 +566,27 @@ export const projects = [
             tag: '4',
             title: 'Planificador de demanda',
             question: '¿Qué demanda viene?',
-            text: 'Probada con 4 personas.',
+            tested:
+              'Una vista para consultar la demanda y encontrar el detalle relevante con filtros por período, cliente y dueño del deal. Probada con 4 personas.',
             change:
               'Nombre descriptivo para la tabla inferior, ícono de ayuda en el filtro de período y filtros por cliente y por dueño del deal.',
+            mockup: {
+              src: 'assets/staffing-cockpit-demanda.png',
+              alt: 'Mockup del planificador de demanda con filtros por período, cliente y dueño del deal',
+              ratio: '2880 / 2120',
+              zoom: {
+                caption: 'Help icon: información sobre cómo usar los filtros',
+                ratio: '341 / 245',
+                imgStyle: { width: '322.58%', left: '-9.03%', top: '-36.87%' },
+              },
+            },
           },
         ],
       },
       results: {
         intro: [
-          'No medí adopción posterior al lanzamiento, así que mi evidencia es el rigor con el que se construyó cada vista.',
-          'En la primera ronda, 16 personas completaron 5 tareas de forma remota con un prototipo clicable, y se evaluó con tasas de completitud y una escala de actitud de 5 puntos. Esa ronda fijó la línea base para las demás. En las otras tres rondas, entrevistas de 30 minutos con mockups en Figma, con pensamiento en voz alta y preguntas durante la tarea.',
-          'Los problemas se priorizaron por frecuencia, impacto y persistencia, y se pasaron a tickets en Jira.',
+          'El primer chart se validó en una ronda donde 16 personas completaron 5 tareas de forma remota con un prototipo clicable, y se evaluó con tasas de completitud y una escala de actitud de 5 puntos. Esa ronda fijó la línea base para las demás. Las tres rondas posteriores consistieron en entrevistas de 30 minutos con mockups en Figma, con pensamiento en voz alta, tareas y preguntas que buscaban validar la usabilidad, accesibilidad y utilidad de la solución propuesta.',
+          'El feedback obtenido de estas sesiones permitió realizar mejoras en el diseño que posteriormente se implementaron.',
         ],
         chart: {
           title: 'Tasa de completitud por tarea en la primera ronda (16 participantes)',
@@ -584,19 +600,26 @@ export const projects = [
             { label: 'Tarea 5', value: 62.5 },
           ],
         },
-        // TODO: completar con las filas de la tabla de decisiones de Sofia: [hallazgo, cambio, 'Sí'].
-        table: { caption: 'Hallazgo → cambio', columns: ['Hallazgo', 'Cambio', 'Implementado'], rows: [] },
         quotes: [
-          { text: '"Si el reporte me dijera que el 25% de la banca es L3 y L4, ya tendría mi respuesta."', author: 'COO' },
+          {
+            text: '"I would also wanna be able to drill down here and see the availability of the people on the bench. You know, what\'s their skill levels, what\'s their experience levels?"',
+            author: 'COO',
+          },
           { text: '"Es mucho más fácil de usar que las herramientas que tenemos hoy."', author: 'Participante' },
         ],
       },
       learnings: {
         items: [
-          'Cada número necesita su definición. Etiquetas, leyendas y metas pesan tanto como el gráfico.',
-          'Un mismo dato se ve distinto según el rol. Resumen para dirección, detalle para staffing.',
-          'Probar antes de construir cuestiona lo que parecía obvio. Por ejemplo, si "Needs more info" merecía ser un KPI.',
-          'Diseñar dentro de la herramienta. Power BI impone límites, como las celdas de tamaño fijo, y se diseña con ellos.',
+          { title: 'Cada número necesita su definición.', text: 'Etiquetas, leyendas y metas pesan tanto como el gráfico.' },
+          { title: 'Un mismo dato se ve distinto según el rol.', text: 'Resumen para dirección, detalle para staffing.' },
+          {
+            title: 'Probar antes de construir cuestiona lo que parecía obvio.',
+            text: 'Por ejemplo, si "Needs more info" merecía ser un KPI.',
+          },
+          {
+            title: 'Diseñar dentro de la herramienta.',
+            text: 'Power BI impone límites, como las celdas de tamaño fijo, y se diseña con ellos.',
+          },
         ],
       },
       nextSteps:
@@ -822,5 +845,8 @@ export const projects = [
     },
   },
 ]
+
+// Solo los proyectos publicados: la home, las rutas, el "Siguiente proyecto" y el build los usan.
+export const projects = allProjects.filter((p) => !p.hidden)
 
 export const getProject = (slug) => projects.find((p) => p.slug === slug)

@@ -4,6 +4,7 @@ import Hero from '../components/Hero.jsx'
 import Nav from '../components/Nav.jsx'
 import Projects from '../components/Projects.jsx'
 import { site } from '../data/content.js'
+import useSectionAssist from '../useSectionAssist.js'
 
 // Sección visible en el centro de la pantalla, igual que en la referencia.
 function useActiveSection() {
@@ -27,6 +28,9 @@ export default function Home() {
   useEffect(() => {
     document.title = site.title
   }, [])
+
+  // Si el scroll se detiene cerca del inicio de una sección, termina de llevar hasta ella.
+  useSectionAssist()
 
   return (
     <>

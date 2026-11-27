@@ -7,9 +7,9 @@ export default function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/proyecto/:slug" element={<CaseStudy />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/home/:slug" element={<CaseStudy />} />
+        <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>
       <ScrollManager />
     </>

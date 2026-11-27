@@ -10,8 +10,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--sans
 a{color:inherit;text-underline-offset:4px}
 :focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:4px}
 .wrap{max-width:1540px;margin:0 auto;padding:0 60px}
-section{scroll-margin-top:0;padding:120px 0 80px}
-h1,h2,h3{font-family:var(--heading);font-weight:500;margin:0;line-height:1.1;letter-spacing:-.01em}
+section{scroll-margin-top:0;padding:120px 0 80px}h1,h2,h3{font-family:var(--heading);font-weight:500;margin:0;line-height:1.1;letter-spacing:-.01em}
 h2{font-size:clamp(2.4rem,4.4vw,3.4rem);margin-bottom:16px}
 
 /* Navegación */
@@ -110,7 +109,7 @@ h2{font-size:clamp(2.4rem,4.4vw,3.4rem);margin-bottom:16px}
 .career{margin:-24px 0 0 auto}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
-/* Caso de estudio (/proyecto/:slug). Estilos nuevos, no están en la referencia. */
+/* Caso de estudio (/home/:slug). Estilos nuevos, no están en la referencia. */
 .case{padding:120px 0 80px}
 .case .wrap{padding:0 160px}
 @media(max-width:1200px){.case .wrap{padding:0 60px}}
